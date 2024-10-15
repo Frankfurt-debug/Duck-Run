@@ -93,15 +93,7 @@
                 if (duck.x < obj.x + obj.width &&
                     duck.x + DUCK_WIDTH > obj.x &&
                     duck.y < obj.y + obj.height &&
-                    duck.y + DUCK_HEIGHT > obj.y) {
-                    if (!duck.isJumping) {
-                        gameOver = true;
-                    } else {
-                        // Allow jumping over the object
-                        if (duck.y + DUCK_HEIGHT >= obj.y) {
-                            objects.splice(i, 1);
-                            score++;
-                        }
+                    duck.y + DUCK_HEIGHT > obj.y)
                     }
                 }
             }
