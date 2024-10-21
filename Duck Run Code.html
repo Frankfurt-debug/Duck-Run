@@ -22,9 +22,15 @@
         const DUCK_HEIGHT = 50;
         const OBJECT_WIDTH = 50;
         const OBJECT_HEIGHT = 50;
-        const OBJECT_FALL_SPEED = 5;
         const GRAVITY = 1;
         const JUMP_STRENGTH = 15;
+        const ACCELERATION = 0.5; // Duck acceleration rate
+        const MAX_SPEED = 10;     // Max speed for the duck
+        const FRICTION = 0.05;    // Friction applied when no input is given
+
+        // Game variables
+        let OBJECT_FALL_SPEED = 5; // Initial fall speed
+        let SPEED_MULTIPLIER = 1;  // Speed multiplier that will increase
 
         // Colors
         const WHITE = "white";
@@ -35,7 +41,7 @@
         const duck = {
             x: SCREEN_WIDTH / 2,
             y: SCREEN_HEIGHT - DUCK_HEIGHT - 10,
-            speed: 10,
+            velocityX: 0,           // Horizontal velocity for smooth movement
             isJumping: false,
             jumpVelocity: 0,
         };
@@ -43,31 +49,61 @@
         const objects = [];
         let score = 0;
         let gameOver = false;
+        let keysPressed = {}; // Track which keys are pressed
 
         // Handle user input
         document.addEventListener("keydown", (event) => {
-            if (event.key === "ArrowLeft") {
-                duck.x = Math.max(0, duck.x - duck.speed);
-            }
-            if (event.key === "ArrowRight") {
-                duck.x = Math.min(SCREEN_WIDTH - DUCK_WIDTH, duck.x + duck.speed);
-            }
-            if (event.key === " ") {
-                if (!duck.isJumping) {
-                    duck.isJumping = true;
-                    duck.jumpVelocity = JUMP_STRENGTH;
-                }
-            }
+            keysPressed[event.key] = true;
         });
 
-        // Add a new falling object
+        document.addEventListener("keyup", (event) => {
+            keysPressed[event.key] = false;
+        });
+
+        // Add a new falling object (some will be special)
         function addFallingObject() {
             const objectX = Math.random() * (SCREEN_WIDTH - OBJECT_WIDTH);
-            objects.push({ x: objectX, y: 0, width: OBJECT_WIDTH, height: OBJECT_HEIGHT });
+            const isSpecial = Math.random() < 0.1; // 10% chance to be special
+            objects.push({ 
+                x: objectX, 
+                y: 0, 
+                width: OBJECT_WIDTH, 
+                height: OBJECT_HEIGHT,
+                isSpecial: isSpecial // New property to mark if the object is special
+            });
+        }
+
+        // Increase game speed
+        function increaseSpeed() {
+            SPEED_MULTIPLIER += 0.01; // Gradually increase multiplier
+            OBJECT_FALL_SPEED = 5 * SPEED_MULTIPLIER; // Apply multiplier to object fall speed
         }
 
         // Game update
         function update() {
+            // Handle duck movement
+            if (keysPressed["ArrowLeft"]) {
+                duck.velocityX -= ACCELERATION; // Accelerate left
+            }
+            if (keysPressed["ArrowRight"]) {
+                duck.velocityX += ACCELERATION; // Accelerate right
+            }
+
+            // Limit maximum speed
+            if (duck.velocityX > MAX_SPEED) duck.velocityX = MAX_SPEED;
+            if (duck.velocityX < -MAX_SPEED) duck.velocityX = -MAX_SPEED;
+
+            // Apply friction to gradually slow down the duck
+            if (!keysPressed["ArrowLeft"] && !keysPressed["ArrowRight"]) {
+                duck.velocityX *= 1 - FRICTION;
+            }
+
+            // Update duck's position
+            duck.x += duck.velocityX;
+
+            // Ensure the duck stays within screen bounds
+            duck.x = Math.max(0, Math.min(SCREEN_WIDTH - DUCK_WIDTH, duck.x));
+
             // Handle jumping
             if (duck.isJumping) {
                 duck.y -= duck.jumpVelocity;
@@ -89,19 +125,18 @@
                     score++;
                 }
 
-                // Check for collisions
+                // Check for any collision (duck touches object)
                 if (duck.x < obj.x + obj.width &&
                     duck.x + DUCK_WIDTH > obj.x &&
                     duck.y < obj.y + obj.height &&
                     duck.y + DUCK_HEIGHT > obj.y) {
-                    if (!duck.isJumping) {
-                        gameOver = true;
+
+                    if (obj.isSpecial) {
+                        // If special, increase score and remove object
+                        score += 10; // Bonus points
+                        objects.splice(i, 1);
                     } else {
-                        // Allow jumping over the object
-                        if (duck.y + DUCK_HEIGHT >= obj.y) {
-                            objects.splice(i, 1);
-                            score++;
-                        }
+                        gameOver = true; // Duck hits regular object and dies
                     }
                 }
             }
@@ -114,7 +149,7 @@
             ctx.fillRect(duck.x, duck.y, DUCK_WIDTH, DUCK_HEIGHT);
 
             objects.forEach((obj) => {
-                ctx.fillStyle = BLACK;
+                ctx.fillStyle = obj.isSpecial ? 'green' : BLACK; // Green for special, black for normal
                 ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
             });
 
@@ -130,6 +165,7 @@
                 update();
                 draw();
                 if (Math.random() < 0.03) addFallingObject(); // Add new object occasionally
+                increaseSpeed(); // Increase speed over time
                 requestAnimationFrame(gameLoop);
             } else {
                 alert("Game Over! Your score: " + score);
@@ -141,4 +177,3 @@
     </script>
 </body>
 </html>
-
