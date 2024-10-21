@@ -31,7 +31,7 @@
         const JUMP_STRENGTH = 15;
         const ACCELERATION = 0.5;
         const MAX_SPEED = 10;
-        const FRICTION = 0.05;
+        const FRICTION = 0.1;
         const MAX_FALL_SPEED = 15;
 
         let OBJECT_FALL_SPEED = 5;
@@ -40,20 +40,31 @@
 
         const WHITE = "white";
         const BLACK = "black";
-        const BLUE= "yellow";
+        const BLUE = "yellow";
 
-        const duck = {
-            x: SCREEN_WIDTH / 2,
-            y: SCREEN_HEIGHT - DUCK_HEIGHT - 10,
-            velocityX: 0,
-            isJumping: false,
-            jumpVelocity: 0,
-        };
+        let duck, objects, score, gameOver, keysPressed;
 
-        const objects = [];
-        let score = 0;
-        let gameOver = false;
-        let keysPressed = {};
+        function resetGame() {
+            duck = {
+                x: SCREEN_WIDTH / 2,
+                y: SCREEN_HEIGHT - DUCK_HEIGHT - 10,
+                velocityX: 0,
+                isJumping: false,
+                jumpVelocity: 0,
+            };
+
+            objects = [];
+            score = 0;
+            gameOver = false;
+            keysPressed = {};
+
+            SPEED_MULTIPLIER = 1;
+            OBJECT_FALL_SPEED = 5;
+            spawnProbability = 0.03;
+
+            backgroundMusic.currentTime = 0; // Reset music to the beginning
+            backgroundMusic.play(); // Play the music again
+        }
 
         document.addEventListener("keydown", (event) => {
             keysPressed[event.key] = true;
@@ -164,12 +175,13 @@
                 requestAnimationFrame(gameLoop);
             } else {
                 alert("Game Over! Your score: " + score);
-                document.location.reload();
+                resetGame(); // Reset the game without reloading
+                requestAnimationFrame(gameLoop); // Restart the game loop
             }
         }
 
-        backgroundMusic.play(); // Start the background music when the game starts
-        gameLoop();
+        resetGame(); // Initialize game variables and music
+        gameLoop(); // Start the game loop
     </script>
 </body>
 </html>
