@@ -10,7 +10,7 @@
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="1260" height="650"></canvas>
+    <canvas id="gameCanvas" width="1260" height="640"></canvas>
     <script>
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
@@ -21,16 +21,16 @@
         backgroundMusic.volume = 0.5;  // Set volume (0.0 to 1.0)
 
         // Constants
-        const SCREEN_WIDTH = 1200;
-        const SCREEN_HEIGHT = 650;
+        const SCREEN_WIDTH = 1260;
+        const SCREEN_HEIGHT = 640;
         const DUCK_WIDTH = 50;
         const DUCK_HEIGHT = 50;
         const OBJECT_WIDTH = 50;
         const OBJECT_HEIGHT = 50;
         const GRAVITY = 1;
-        const JUMP_STRENGTH = 15;
-        const ACCELERATION = 0.5;
-        const MAX_SPEED = 10;
+        const JUMP_STRENGTH = 25;
+        const ACCELERATION = 1;
+        const MAX_SPEED = 20;
         const FRICTION = 0.3;
         const MAX_FALL_SPEED = 20;
 
