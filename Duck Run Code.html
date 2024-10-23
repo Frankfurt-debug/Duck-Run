@@ -41,7 +41,7 @@
         const WHITE = "white";
         const BLACK = "black";
         const BLUE = "yellow";
-        let RAIN;
+        let RAIN = 0;  // For the color cycling effect
 
         let duck, objects, score, gameOver, keysPressed;
 
@@ -82,23 +82,22 @@
         function addFallingObject() {
             const objectX = Math.random() * (SCREEN_WIDTH - OBJECT_WIDTH);
             const isSpecial = Math.random() < 0.1;
-            const issus = math.random() < 0.003;
+            const isRainbow = Math.random() < 0.03;  // Rainbow objects
             objects.push({ 
                 x: objectX, 
                 y: 0, 
                 width: OBJECT_WIDTH, 
                 height: OBJECT_HEIGHT,
-                isSpecial: isSpecial
+                isSpecial: isSpecial,
+                isRainbow: isRainbow  // Add a new "isRainbow" property for special objects
             });
         }
-         function changeColor() {
-      let RAIN = 0;
 
-      setInterval(() => {
-        element.style.color = `hsl(${RAIN}, 100%, 50%)`;
-        RAIN = (RAIN + 10) % 360; // Cycle through hues
-      }, 100); // Change color every 100ms
-    }
+        function changeColor() {
+            setInterval(() => {
+                RAIN = (RAIN + 10) % 360; // Cycle through hues
+            }, 100); // Change color every 100ms
+        }
 
         function increaseSpeed() {
             SPEED_MULTIPLIER += 0.0003;
@@ -153,6 +152,13 @@
                     if (obj.isSpecial) {
                         score += 10;
                         objects.splice(i, 1);
+                    } else if (obj.isRainbow) {
+                        let s = "frankfurt";
+                        while (3 < 5) {
+                        console.log(s);
+                    }
+
+                        objects.splice(i, 1);
                     } else {
                         gameOver = true;
                     }
@@ -166,7 +172,14 @@
             ctx.fillRect(duck.x, duck.y, DUCK_WIDTH, DUCK_HEIGHT);
 
             objects.forEach((obj) => {
-                ctx.fillStyle = obj.isSpecial ? 'green' : BLACK : obj.issus ? 'RAIN';
+                if (obj.isRainbow) {
+                    // Set rainbow color effect using hsl
+                    ctx.fillStyle = `hsl(${RAIN}, 100%, 50%)`;
+                } else if (obj.isSpecial) {
+                    ctx.fillStyle = 'green';
+                } else {
+                    ctx.fillStyle = BLACK;
+                }
                 ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
             });
 
