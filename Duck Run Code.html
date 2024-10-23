@@ -47,7 +47,7 @@
         const BLUE = "yellow";
         let RAIN = 0;
 
-        let useBackgroundImage = true;  // This will determine when to switch to the image
+        let useBackgroundImage = false;  // This will determine when to switch to the image
 
         let duck, objects, score, gameOver, keysPressed;
 
@@ -172,7 +172,7 @@
 
         function draw() {
             // Draw the background
-            if (useBackgroundImage && backgroundImage.complete) {
+            if (useBackgroundImage === true) {
                 // If the background image is loaded and ready, draw it
                 ctx.drawImage(backgroundImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             } else {
