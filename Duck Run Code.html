@@ -29,7 +29,7 @@
         const OBJECT_HEIGHT = 50;
         const GRAVITY = 1;
         const JUMP_STRENGTH = 15;
-        const ACCELERATION = 0.5;
+        const ACCELERATION = 1;
         const MAX_SPEED = 20;
         const FRICTION = 0.2;
         const MAX_FALL_SPEED = 20;
@@ -41,6 +41,7 @@
         const WHITE = "white";
         const BLACK = "black";
         const BLUE = "yellow";
+        let RAIN;
 
         let duck, objects, score, gameOver, keysPressed;
 
@@ -81,6 +82,7 @@
         function addFallingObject() {
             const objectX = Math.random() * (SCREEN_WIDTH - OBJECT_WIDTH);
             const isSpecial = Math.random() < 0.1;
+            const issus = math.random() < 0.003;
             objects.push({ 
                 x: objectX, 
                 y: 0, 
@@ -89,6 +91,14 @@
                 isSpecial: isSpecial
             });
         }
+         function changeColor() {
+      let RAIN = 0;
+
+      setInterval(() => {
+        element.style.color = `hsl(${RAIN}, 100%, 50%)`;
+        RAIN = (RAIN + 10) % 360; // Cycle through hues
+      }, 100); // Change color every 100ms
+    }
 
         function increaseSpeed() {
             SPEED_MULTIPLIER += 0.0003;
@@ -156,7 +166,7 @@
             ctx.fillRect(duck.x, duck.y, DUCK_WIDTH, DUCK_HEIGHT);
 
             objects.forEach((obj) => {
-                ctx.fillStyle = obj.isSpecial ? 'green' : BLACK;
+                ctx.fillStyle = obj.isSpecial ? 'green' : BLACK : obj.issus ? 'RAIN';
                 ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
             });
 
@@ -183,6 +193,7 @@
 
         resetGame(); // Initialize game variables and music
         gameLoop(); // Start the game loop
+        window.onload = changeColor;
     </script>
 </body>
 </html>
