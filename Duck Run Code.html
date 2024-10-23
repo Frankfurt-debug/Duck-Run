@@ -18,7 +18,7 @@
         // Music setup with external URL
         const backgroundMusic = new Audio('https://dl.sndup.net/tz582/Sparta%20Remix%20Extended%20-%20Instrumental%20version.mp3'); // Replace with actual link
         backgroundMusic.loop = true;   // Loop the music
-        backgroundMusic.volume = 0.5;  // Set volume (0.0 to 1.0)
+        backgroundMusic.volume = 1.0;  // Set volume (0.0 to 1.0)
 
         // Constants
         const SCREEN_WIDTH = 1310;
@@ -29,7 +29,7 @@
         const OBJECT_HEIGHT = 50;
         const GRAVITY = 1;
         const JUMP_STRENGTH = 15;
-        const ACCELERATION = 2;
+        const ACCELERATION = 0.5;
         const MAX_SPEED = 20;
         const FRICTION = 0.2;
         const MAX_FALL_SPEED = 20;
@@ -91,7 +91,7 @@
         }
 
         function increaseSpeed() {
-            SPEED_MULTIPLIER += 0.001;
+            SPEED_MULTIPLIER += 0.0003;
             OBJECT_FALL_SPEED = Math.min(5 * SPEED_MULTIPLIER, MAX_FALL_SPEED);
         }
 
@@ -100,10 +100,10 @@
         }
 
         function update() {
-            if (keysPressed["ArrowLeft"]) {
+            if (keysPressed["ArrowLeft"] || KeysPressed["a"]) {
                 duck.velocityX -= ACCELERATION;
             }
-            if (keysPressed["ArrowRight"]) {
+            if (keysPressed["ArrowRight"] || KeysPressed["d"]) {
                 duck.velocityX += ACCELERATION;
             }
 
