@@ -49,6 +49,7 @@
         let OBJECT_FALL_SPEED = 5;
         let SPEED_MULTIPLIER = 1;
         let spawnProbability = 0.03;
+        let minigames
 
         let useBackgroundImage = false;
 
@@ -74,7 +75,9 @@
             spawnProbability = 0.03;
 
             backgroundMusic.currentTime = 0;
-            backgroundMusic.play();
+            if (minigames === 1) {
+                backgroundMusic.play();
+            }
         }
 
         document.addEventListener("keydown", (event) => {
@@ -111,8 +114,9 @@
                 }, 100);
             }
         }
-        
-        morepoint();
+        if (usescore) {
+            morepoint();
+        }
         
         function morepoint() {
             setTimeout(function() {
@@ -122,7 +126,7 @@
         }
         
         function increaseSpeed() {
-            SPEED_MULTIPLIER += 0.0009;
+            SPEED_MULTIPLIER += 0.0015;
             OBJECT_FALL_SPEED = Math.min(5 * SPEED_MULTIPLIER, MAX_FALL_SPEED);
         }
 
@@ -221,6 +225,7 @@
             ctx.fillRect(duck.x, duck.y, DUCK_WIDTH, DUCK_HEIGHT);
 
             // Draw falling objects
+            if (minigames === 1) {
             objects.forEach((obj) => {
                 if (obj.isRainbow) {
                     ctx.drawImage(rainbowImage, obj.x, obj.y, obj.width, obj.height);
@@ -232,20 +237,25 @@
                     ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
                 }
             });
-
+            }
+            
             // Draw the score
+            if (usescore) {
             ctx.fillStyle = "black";
             ctx.font = "20px Arial";
             ctx.fillText("Score: " + score, 10, 20);
+            }
         }
 
         function gameLoop() {
             if (!gameOver) {
                 update();
                 draw();
+                if (minigames === 1) {
                 if (Math.random() < spawnProbability) addFallingObject();
                 increaseSpeed();
                 adjustSpawnRate();
+                }
                 requestAnimationFrame(gameLoop);
             } else {
                 backgroundMusic.pause();
