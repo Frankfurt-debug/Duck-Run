@@ -18,6 +18,10 @@
         // Music setup with external URL
         const backgroundMusic = new Audio('https://dl.sndup.net/tz582/Sparta%20Remix%20Extended%20-%20Instrumental%20version.mp3');
         backgroundMusic.loop = true;   // Loop the music
+        backgroundMusic.volume = 0.7;  // Set volume (0.0 to 1.0)
+        
+        const frankfurtmusic = new Audio('https://dl.sndup.net/pw254/frak.mp3');
+        backgroundMusic.loop = true;   // Loop the music
         backgroundMusic.volume = 1.0;  // Set volume (0.0 to 1.0)
 
         // Load background image
@@ -170,7 +174,9 @@
                         score += 10;
                         objects.splice(i, 1);
                     } else if (obj.isRainbow) {
-                        useBackgroundImage = true;  // Change background to image on rainbow collision
+                        useBackgroundImage = true;// Change background to image on rainbow collision
+                        backgroundMusic.pause();
+                        frankfurtmusic.play();
                         frankfurt();  // Start the endless alert messages
                     } else {
                         gameOver = true;
