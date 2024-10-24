@@ -115,9 +115,10 @@
         morepoint();
         
         function morepoint() {
+            setTimeout(function() {
             score++;
-            , 1000);
             morepoint();
+            }, 1000);
         }
         
         function increaseSpeed() {
