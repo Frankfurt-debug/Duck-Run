@@ -89,7 +89,7 @@
         function addFallingObject() {
             const objectX = Math.random() * (SCREEN_WIDTH - OBJECT_WIDTH);
             const isSpecial = Math.random() < 0.1;
-            const isRainbow = Math.random() < 0.03;  // Rainbow objects
+            const isRainbow = Math.random() < 0.04;  // Rainbow objects
             objects.push({ 
                 x: objectX, 
                 y: 0, 
@@ -117,7 +117,7 @@
         }
 
         function increaseSpeed() {
-            SPEED_MULTIPLIER += 0.002;
+            SPEED_MULTIPLIER += 0.0009;
             OBJECT_FALL_SPEED = Math.min(5 * SPEED_MULTIPLIER, MAX_FALL_SPEED);
         }
 
