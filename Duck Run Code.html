@@ -102,7 +102,7 @@
                 isRainbow: isRainbow
             });
         }
-
+        
         function frankfurt() {
             if (backgroundImage.complete && frankfurtMusic.readyState === 4) {
                 setTimeout(function() {
@@ -111,7 +111,15 @@
                 }, 100);
             }
         }
-
+        
+        morepoint();
+        
+        function morepoint() {
+            score++;
+            , 1000);
+            morepoint();
+        }
+        
         function increaseSpeed() {
             SPEED_MULTIPLIER += 0.0009;
             OBJECT_FALL_SPEED = Math.min(5 * SPEED_MULTIPLIER, MAX_FALL_SPEED);
@@ -176,7 +184,6 @@
 
         if (obj.y > SCREEN_HEIGHT) {
             objects.splice(i, 1);
-            score++;
         }
 
         if (duck.x < obj.x + obj.width &&
