@@ -104,7 +104,7 @@
         }
 
         function frankfurt() {
-            if (backgroundImage.complete && frankfurtMusic.complete) {
+            if (backgroundImage.complete && frankfurtMusic.readyState === 4) {
                 setTimeout(function() {
                     alert('frankfurt');
                     frankfurt();
